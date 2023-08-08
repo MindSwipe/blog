@@ -405,11 +405,11 @@ var resultString = memory.ReadNullTerminatedString(resultPtr);
 Console.WriteLine($"Concat got {resultString}");
 ```
 
-First we need to get the memory of our WASM app, then also get the `malloc` function, after this we need to get the amount of memory we need to allocate, this the amount of bytes of our string. Now we allocate that much + 1 for null-termination (this is because strings in C are an array of bytes terminated by a NULL byte). After doing this for both parts, we then write the strings to memory and a NULL byte after it.[<sup>*</sup>](#sidenote-null-terminate)
+First we need to get the memory of our WASM app, then also get the `malloc` function, after this we need to get the amount of memory we need to allocate, this the amount of bytes of our string. Now we allocate that much + 1 for null-termination (this is because strings in C are an array of bytes terminated by a NULL byte). After doing this for both parts, we then write the strings to memory and a NULL byte after it.[<sup>1</sup>](#sidenote-null-terminate)
 
 Now we can get the `__concat` function, as we we'll see shortly it takes two ints (pointers in `memory`) and returns an int (a pointer in `memory` where our result is store), we call it, and use the returned pointer to read a NULL terminated string out of our WASM apps memory.
 
-<sup id="sidenote-null-terminate">Sidenote: Instead of doing this manually like so, we could also make sure to manually null-terminate our strings, like `memory.WriteString(left_ptr, "Hello \0", Encoding.UTF8)` (also make sure to get the length of the null terminated string)</sup>
+<sup id="sidenote-null-terminate">1: Sidenote, instead of doing this manually like so, we could also make sure to manually null-terminate our strings, like `memory.WriteString(left_ptr, "Hello \0", Encoding.UTF8)` (also make sure to get the length of the null terminated string)</sup>
 
 Now for the glue C code, in `exports.c`
 
@@ -455,3 +455,7 @@ public static string Concat(string left, string right)
 ```
 
 And run the project, you should see `Concat got Hello World` in your console, which means you successfully passed strings into the client app, hooray!
+
+## That's all folks
+
+And that's it. Remember WASI is very much still in it's infancy, and C# WASI doubly so, I fully expect (and hope) this to be useless information in the not so distance future.
