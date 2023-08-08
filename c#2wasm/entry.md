@@ -20,6 +20,8 @@ While (as the name suggests) it was originally intended to only be ran inside a 
 
 ## Let's get to it
 
+Before we start writing any code, you should know that the entire source code is available in the [MyWasmSolution directory](MyWasmSolution/), so if you get stuck or just want to see the final product you can check it out.
+
 ### Compiling C\# to WASM
 
 Let's actually start creating our WASM application by creating our C# scaffold.
